@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -22,6 +23,15 @@ const LoginForm = () => {
         alert('formSubmitted');
         actions.setSubmitting(false);
       }}
+      validationSchema={Yup.object().shape({
+        email: Yup
+          .string()
+          .email('Invalid Email')
+          .required('Required'),
+        password: Yup
+          .string()
+          .required('Required')
+      })}
     >
       {props => (
         <Form>
