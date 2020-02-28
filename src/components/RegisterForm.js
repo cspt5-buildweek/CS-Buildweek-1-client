@@ -114,6 +114,7 @@ const RegisterForm = () => {
                 type="submit"
                 variant="contained"
                 fullWidth
+                disabled={props.isSubmitting}
               >
                 Register
               </Button>
