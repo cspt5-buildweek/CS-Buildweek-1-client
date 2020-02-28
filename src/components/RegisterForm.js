@@ -4,14 +4,46 @@ import * as Yup from 'yup';
 
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import styled from 'styled-components';
 
 import FormTextField from './FormTextField';
+
+const LayoutWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & > .MuiFormControl-root {
+    height: 2rem;
+  }
+
+  & > * {
+    margin: 1rem 0;
+  }
+`;
+
+const HorizonalWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+
+    & > * {
+      flex: 1;
+      margin: 0 0.5rem;
+
+      :first-child {
+        margin-left: 0;
+      }
+
+      :last-child {
+        margin-right: 0;
+      }
+    } 
+`;
 
 const RegisterForm = () => {
   return (
     <div>
-      <Typography varient="h2">
-        Create a new account
+      <Typography variant="h3"  align="center">
+        Create account
       </Typography>
       <Formik
         initialValues={{
@@ -44,25 +76,25 @@ const RegisterForm = () => {
             .required('Required'),
           password: Yup
             .string()
-            .min(8, 'Must contain at least ${min} characters')     // eslint-disable-line no-template-curly-in-string
-            .requird('Required')
+            .min(8, 'Must contain at least ${min} characters')      // eslint-disable-line no-template-curly-in-string
+            .required('Required')
         })}
       >
         {props => (
           <Form>
-            <div>
-              <FormTextField
-                name="firstName"
-                type="text"
-                placeholder="First Name"
-              />
-              <FormTextField
-                name="lastName"
-                type="text"
-                placeholder="Last Name"
-              />
-            </div>
-            <div>
+            <LayoutWrapper>
+              <HorizonalWrapper>
+                <FormTextField
+                  name="firstName"
+                  type="text"
+                  placeholder="First Name"
+                />
+                <FormTextField
+                  name="lastName"
+                  type="text"
+                  placeholder="Last Name"
+                />
+              </HorizonalWrapper>
               <FormTextField
                 name="displayName"
                 type="text"
@@ -78,11 +110,15 @@ const RegisterForm = () => {
                 type="password"
                 placeholder="Password"
               />
-            </div>
-            <Button type="submit">
-              Submit
-            </Button>
-            <pre>{JSON.stringify(props.values, null, 2)}</pre>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+              >
+                Register
+              </Button>
+            </LayoutWrapper>
+            {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
           </Form>
         )}
       </Formik>
