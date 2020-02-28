@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from '../hooks/useUserContext';
 
 const GamePage = () => {
+  const userData = useContext(UserContext);
   return (
-    <div>GamePage</div>
+    <div>
+      <h2>GamePage</h2>
+      <p>{userData.name}</p>
+    </div>
   );
 };
 

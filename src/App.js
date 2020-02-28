@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import UserContext from './store/UserContext';
 import GamePage from './pages/GamePage';
 import LoginPage from './pages/LoginPage';
+import useUserContext from './hooks/useUserContext';
 
 function App() {
-  const [userData, setUserData] = useState();
+  const { UserProvider, setValue } = useUserContext();
 
   return (
-    <UserContext.Provider value={{userData, setUserData}}>
+    <UserProvider>
       <BrowserRouter>
         <Switch>
 
@@ -23,8 +23,11 @@ function App() {
           </Route>
           
         </Switch>
+        <button onClick={() => setValue({ name: 'test_2' })}>
+          change
+        </button>
       </BrowserRouter>
-    </UserContext.Provider>
+    </UserProvider>
   );
 }
 
