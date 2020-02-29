@@ -33,7 +33,7 @@ const GameMap = ({ mapData }) => {
     const xRange = d3.extent(Object.values(mapData.roomsDict), room => room.coords[0]);
     const yRange = d3.extent(Object.values(mapData.roomsDict), room => room.coords[1]);
     const xSize = xRange[1] - xRange[0] + 4;
-    const ySize = yRange[1] - xRange[0] + 4;
+    const ySize = yRange[1] - yRange[0] + 4;
     setViewBox(`${xOffset} ${yOffset} ${xSize} ${ySize}`);
 
     // create an edges array with start and end coordinates
