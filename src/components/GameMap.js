@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { useLogOnChange } from '../hooks/misc';
 import NodeBuilder from './NodeBuilder';
 import EdgeBuilder from './EdgeBuilder';
+import PlayerBuilder from './PlayerBuilder';
 
 const SVGWrapper = styled(Paper)`
   padding: 2rem;
@@ -19,7 +20,7 @@ const SVG = styled.svg`
   background-color: lightGrey;
 `;
 
-const GameMap = ({ mapData }) => {
+const GameMap = ({ mapData, playerData }) => {
   const [viewBox, setViewBox] = useState('0 0 0 0');
   useLogOnChange('viewBox', viewBox);
 
@@ -61,6 +62,7 @@ const GameMap = ({ mapData }) => {
           </text>
           <EdgeBuilder edges={edges} />
           <NodeBuilder nodes={Object.values(mapData.roomsDict)} />
+          <PlayerBuilder playerData={playerData} />
         </SVG>
       </SVGWrapper>
     </div>
