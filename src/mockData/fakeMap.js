@@ -37,8 +37,8 @@ const halls_1 = [
     id: 1,
     from: 1,
     to: 2,
-    fromDir: 'n',
-    toDir: 's'
+    fromDir: 's',
+    toDir: 'n'
   },
   {
     id: 2,
@@ -51,8 +51,8 @@ const halls_1 = [
     id: 3,
     from: 2,
     to: 4,
-    fromDir: 'n',
-    toDir: 's'
+    fromDir: 's',
+    toDir: 'n'
   },
   {
     id: 4,
@@ -70,10 +70,10 @@ export const buildMap_1 = () => {
 
     room.links = halls_1.reduce((links, hall) => {
       if (hall.from === room.id) {
-        links[hall.fromDir] = hall.id;
+        links[hall.fromDir] = { hall_id: hall.id, next_room: hall.to };
         return links;
       } else if (hall.to === room.id) {
-        links[hall.toDir] = hall.id;
+        links[hall.toDir] = { hall_id: hall.id, next_room: hall.from };
         return links;
       } else {
         return links;

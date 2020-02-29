@@ -13,32 +13,42 @@ const GamePage = () => {
 
   const [player, setPlayer] = useState({
     name: 'player_1',
-    position: map && map.roomsDict[1].coords
+    room: 1,
+    position: map.roomsDict[1].coords
   });
   useLogOnChange('Player', player);
 
-  const handleClick = () => {
+  // This is just some debug/testing stuff. making sure things keep working as expected
+  // if new nodes get added later, after the inital load.
+  const handleClick2 = () => {
     setMap(prev => ({
       ...prev,
       roomsDict: {
         ...prev.roomsDict,
         1: {
           ...prev.roomsDict[1],
-          name: 'test'
-        }
-      }
-    }));
-  };
-
-  const handleClick2 = () => {
-    setMap(prev => ({
-      ...prev,
-      roomsDict: {
-        ...prev.roomsDict,
+          links: {
+            ...prev.roomsDict[1].links,
+            w: { hall_id: 5, next_room: 7 }
+          }
+        },
         7: {
           id: 7,
           name: 'test',
-          coords: [0, 1]
+          coords: [0, 1],
+          links: {
+            e: { hall_id: 5, next_room: 1 }
+          }
+        }
+      },
+      linksDict: {
+        ...prev.linksDict,
+        5: {
+          id: 5,
+          from: 1,
+          to: 7,
+          fromDir: 'w',
+          toDir: 'e'
         }
       }
     }));
@@ -59,44 +69,24 @@ const GamePage = () => {
   };
 
   const handleMovePlayer = (dir) => () => {
-    switch (dir) {
-      case 'n':
-        console.log('move north');
-        setPlayer(prev => ({
+    if (map.roomsDict[player.room].links[dir]) { // check if current room has an exit in that direction
+      setPlayer(prev => {
+        const nextRoom = map.roomsDict[map.roomsDict[prev.room].links[dir].next_room]; // get the info on the next room in that direction
+        return {
           ...prev,
-          position: [prev.position[0], prev.position[1] - 1]
-        }));
-        break;
-      case 's':
-        console.log('move south');
-        setPlayer(prev => ({
-          ...prev,
-          position: [prev.position[0], prev.position[1] + 1]
-        }));
-        break;
-      case 'e':
-        console.log('move east');
-        setPlayer(prev => ({
-          ...prev,
-          position: [prev.position[0] + 1, prev.position[1]]
-        }));
-        break;
-      case 'w':
-        console.log('move west');
-        setPlayer(prev => ({
-          ...prev,
-          position: [prev.position[0] - 1, prev.position[1]]
-        }));
-        break;
-      default:
-        console.error('Invalid dir in handleMovePlayer');
+          room: nextRoom.id,
+          position: nextRoom.coords
+        };
+      });
+    } else {
+      console.error('no path in that direction');
     }
   };
   
   return (
     <div>
       <h2>GamePage</h2>
-      <p>{userData.name}</p>
+      <p>current user: {userData.name}</p>
       <GameMap mapData={map} playerData={player} />
       <div>
         <button onClick={handleMovePlayer('n')}>
@@ -112,10 +102,7 @@ const GamePage = () => {
           West
         </button>
       </div>
-      <div>  
-        <button onClick={handleClick}>
-          test name change
-        </button>
+      <div>
         <button onClick={handleClick2}>
           test 2
         </button>
