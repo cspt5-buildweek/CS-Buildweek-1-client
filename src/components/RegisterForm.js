@@ -25,6 +25,10 @@ const HorizonalWrapper = styled.div`
     display: flex;
     flex-direction: row;
 
+    & > .MuiFormControl-root {
+      height: 2rem;
+    }
+
     & > * {
       flex: 1;
       margin: 0 0.5rem;
