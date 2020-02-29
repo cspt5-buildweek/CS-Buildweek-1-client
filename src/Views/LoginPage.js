@@ -22,7 +22,7 @@ function LoginPage() {
     e.preventDefault()
     axios.post("https://lambda-mud-test.herokuapp.com/api/login/", userInfo)
     .then(response => {
-      console.log(response)
+      localStorage.setItem("loginKey", response.data)
     })
     // TODO Must set up a .catch for failure 
   }
