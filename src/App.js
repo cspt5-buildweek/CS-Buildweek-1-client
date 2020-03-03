@@ -2,9 +2,12 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
+import useUserContext from './hooks/useUserContext';
+
+// Components
+import InfoBar from "./Components/BottomNav/InfoBar";
 import GamePage from './pages/GamePage';
 import LoginPage from './pages/LoginPage';
-import useUserContext from './hooks/useUserContext';
 
 function App() {
   const { UserProvider, setValue } = useUserContext();
@@ -12,6 +15,9 @@ function App() {
   return (
     <UserProvider>
       <BrowserRouter>
+    
+        <nav>NAV</nav>
+    
         <Switch>
 
           <Route exact path="/">
