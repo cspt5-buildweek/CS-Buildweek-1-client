@@ -59,7 +59,7 @@ const GameMap = ({ mapData, currentRoom }) => {
         <SVG ref={svgRef} viewBox={`-5 ${-heightOffset} 10 10`} preserveAspectRatio="xMinYMin slice">
           <g transform={`translate(${translate[0]} ${translate[1]})`}>
             <EdgeBuilder mapData={mapData} />
-            <NodeBuilder mapData={mapData} />
+            <NodeBuilder mapData={mapData} currentRoom={currentRoom} />
           </g>
           <g>
             <circle r="0.12" cx="0" cy="0" fill="#1000b4" />
