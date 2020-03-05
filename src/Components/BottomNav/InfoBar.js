@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     boxSizing: "border-box",
     // width: 500,
-    position: "absolute",
+    // position: "absolute",
     bottom: "0px",
     // border: "1px solid red",
     height: "300px",
@@ -81,7 +81,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function InfoBar() {
+export default function InfoBar({ movePlayer }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [modal, setModal] = useState("shop");
@@ -107,14 +107,14 @@ export default function InfoBar() {
   };
 
   // Movement
-  const move = (e, direction) => {
-    // Must be filled in
-  };
+  // const move = (e, direction) => {
+  //   // Must be filled in
+  // };
 
   // Buttons
-  const dropItem = () => {};
-  const pickUpItem = () => {};
-  const sellItem = () => {};
+  // const dropItem = () => {};
+  // const pickUpItem = () => {};
+  // const sellItem = () => {};
 
   return (
     <BottomNavigation className={classes.root}>
@@ -170,23 +170,27 @@ export default function InfoBar() {
                 fontSize="large"
                 className={classes.icons}
                 style={iconStyle}
+                onClick={movePlayer('n')}
               />
               <div>
                 <ArrowBackIcon
                   fontSize="large"
                   className={`${classes.middleIcons} ${classes.icons}`}
                   style={iconStyle}
+                  onClick={movePlayer('w')}
                 />
                 <ArrowForwardIcon
                   fontSize="large"
                   className={`${classes.middleIcons} ${classes.icons}`}
                   style={iconStyle}
+                  onClick={movePlayer('e')}
                 />
               </div>
               <ArrowDownwardIcon
                 fontSize="large"
                 className={classes.icons}
                 style={iconStyle}
+                onClick={movePlayer('s')}
               />
             </div>
           </div>

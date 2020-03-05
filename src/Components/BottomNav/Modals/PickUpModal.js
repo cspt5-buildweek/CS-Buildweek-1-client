@@ -7,7 +7,7 @@ const useStyles = makeStyles({
   root: {
     boxSizing: "border-box",
     // border: "1px solid red",
-    height: "50vh",
+    // height: "50vh",
     textAlign: "center"
   },
   itemContainer: {

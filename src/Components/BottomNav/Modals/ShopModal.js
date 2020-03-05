@@ -49,13 +49,13 @@ function ShopModal() {
   const classes = useStyles();
   // Set up state to hold items or get passed down
 
-  const sellItem = () => {
+  // const sellItem = () => {
 
-  }
+  // }
 
-  const buyItem = () => {
+  // const buyItem = () => {
 
-  }
+  // }
 
   return (
     <div className={classes.root}>
