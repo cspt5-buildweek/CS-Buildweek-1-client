@@ -16,26 +16,16 @@ const PageWrapper = styled.div`
 const GamePage = () => {
   // const userData = useContext(UserContext);
 
-  const [map] = useState(buildMap_1());
-  useLogOnChange('Map', map);
+  const [mapData] = useState(buildMap_1());
+  useLogOnChange('Map', mapData);
 
-  const [player, setPlayer] = useState({
-    name: 'player_1',
-    room: 1,
-    position: map.roomsDict[1].coords
-  });
-  useLogOnChange('Player', player);
+  const [currentRoom, setCurrentRoom] = useState(mapData.startRoom);
+  useLogOnChange('currentRoom', currentRoom);
 
   const handleMovePlayer = (dir) => () => {
-    if (map.roomsDict[player.room].links[dir]) { // check if current room has an exit in that direction
-      setPlayer(prev => {
-        const nextRoom = map.roomsDict[map.roomsDict[prev.room].links[dir].next_room]; // get the info on the next room in that direction
-        return {
-          ...prev,
-          room: nextRoom.id,
-          position: nextRoom.coords
-        };
-      });
+    const linkInDir = mapData.roomsDict[currentRoom].links[dir];
+    if (linkInDir) { // check if current room has an exit in that direction
+      setCurrentRoom(mapData.roomsDict[linkInDir.next_room].id); // get the id of next room in that direction
     } else {
       console.error('no path in that direction');
     }
@@ -43,7 +33,7 @@ const GamePage = () => {
   
   return (
     <PageWrapper>
-      <GameMap mapData={map} playerData={player} />
+      <GameMap mapData={mapData} currentRoom={currentRoom} />
       <InfoBar movePlayer={handleMovePlayer} />
     </PageWrapper>
   );

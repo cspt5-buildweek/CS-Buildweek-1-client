@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { useLogOnChange } from '../hooks/misc';
 import NodeBuilder from './NodeBuilder';
 import EdgeBuilder from './EdgeBuilder';
-// import PlayerBuilder from './PlayerBuilder';
 
 const MapContainer = styled(Paper)`
   padding: 2rem;
@@ -34,9 +33,11 @@ const SVG = styled.svg`
   top: 0;
 `;
 
-const GameMap = ({ mapData, playerData }) => {
+const GameMap = ({ mapData, currentRoom }) => {
   const [heightOffset, setHeightOffset] = useState(0);
   useLogOnChange('heightOffset', heightOffset);
+
+  const [translate, setTranslate] = useState([0, 0]);
 
   const svgRef = useRef();
   
@@ -46,19 +47,24 @@ const GameMap = ({ mapData, playerData }) => {
     setHeightOffset(height / (2 * pixelsPerUnit)); // the number of svg units needed to vertically center the origin, for a specific element size
   }, []);
 
+  useEffect(() => {
+    const [x, y] = mapData.roomsDict[mapData.startRoom].coords;
+    setTranslate([-x, -y]);
+  }, [mapData, currentRoom]);
+
   return (
     <MapContainer>
       <h4>GameMap</h4>
       <SVGWrapper>
         <SVG ref={svgRef} viewBox={`-5 ${-heightOffset} 10 10`} preserveAspectRatio="xMinYMin slice">
-          <circle r="0.12" cx="0" cy="0" fill="#1000b4" />
-          <circle r="0.04" cx="0" cy="0" fill="black" />
-          
-          <g>
+          <g transform={`translate(${translate[0]} ${translate[1]})`}>
             <EdgeBuilder mapData={mapData} />
             <NodeBuilder mapData={mapData} />
           </g>
-          {/* <PlayerBuilder playerData={playerData} /> */}
+          <g>
+            <circle r="0.12" cx="0" cy="0" fill="#1000b4" />
+            <circle r="0.04" cx="0" cy="0" fill="black" />
+          </g>
         </SVG>
       </SVGWrapper>
     </MapContainer>

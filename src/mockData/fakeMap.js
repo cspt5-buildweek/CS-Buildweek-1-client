@@ -84,11 +84,8 @@ export const buildMap_1 = () => {
   map.roomsDict = rooms_1.reduce((dict, room) => {
 
     room.links = halls_1.reduce((links, hall) => {
-      if (hall.from === room.id) {
-        links[hall.fromDir] = { hall_id: hall.id, next_room: hall.to };
-        return links;
-      } else if (hall.to === room.id) {
-        links[hall.toDir] = { hall_id: hall.id, next_room: hall.from };
+      if (hall.nodes[room.id]) {
+        links[hall.nodes[room.id].dir] = { hall_id: hall.id, next_room: hall.nodes[room.id].to };
         return links;
       } else {
         return links;

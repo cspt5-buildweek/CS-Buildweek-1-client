@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NodeBuilder = ({ mapData }) => {
+const NodeBuilder = ({ mapData, currentRoom }) => {
   return (
     <g>
       {Object.values(mapData.roomsDict).map(node => (
@@ -13,7 +13,7 @@ const NodeBuilder = ({ mapData }) => {
           />
           <text
             x={node.coords[0]}
-            y={node.coords[1]}
+            y={node.coords[1] - (currentRoom === node.id ? 0.2 : 0)}
             fontSize="0.15"
             fill="crimson"
             textAnchor="middle"
