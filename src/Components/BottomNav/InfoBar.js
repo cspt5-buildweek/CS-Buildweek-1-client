@@ -46,7 +46,11 @@ const useStyles = makeStyles(theme => ({
   directions: {
     // border: "1px solid red",
     // marginLeft: "50px",
-    marginTop: "25px"
+    marginTop: "25px",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   icons: {
     // border: "1px solid red",
