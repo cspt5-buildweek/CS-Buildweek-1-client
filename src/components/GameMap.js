@@ -38,24 +38,13 @@ const GameMap = ({ mapData, playerData }) => {
   const [heightOffset, setHeightOffset] = useState(0);
   useLogOnChange('heightOffset', heightOffset);
 
-  const [edges, setEdges] = useState([]);
-  // useLogOnChange('edges', edges);
-
   const svgRef = useRef();
   
   useEffect(() => {
     const { width, height } = svgRef.current.getBoundingClientRect();
     const pixelsPerUnit = width / 10; // 10, because I chose to define the svg viewbox as 10 units wide.
     setHeightOffset(height / (2 * pixelsPerUnit)); // the number of svg units needed to vertically center the origin, for a specific element size
-
-    // create an edges array with start and end coordinates
-    const edgeList = Object.values(mapData.linksDict).map(edge => ({
-      ...edge,
-      fromCoords: mapData.roomsDict[edge.from].coords,
-      toCoords: mapData.roomsDict[edge.to].coords
-    }));
-    setEdges(edgeList);
-  }, [mapData]);
+  }, []);
 
   return (
     <MapContainer>
@@ -64,16 +53,10 @@ const GameMap = ({ mapData, playerData }) => {
         <SVG ref={svgRef} viewBox={`-5 ${-heightOffset} 10 10`} preserveAspectRatio="xMinYMin slice">
           <circle r="0.12" cx="0" cy="0" fill="#1000b4" />
           <circle r="0.04" cx="0" cy="0" fill="black" />
-          {/* <text
-            x="0"
-            y="0"
-            fontSize="0.3"
-          >
-            (0,0)
-          </text> */}
+          
           <g>
-            <EdgeBuilder edges={edges} />
-            <NodeBuilder nodes={Object.values(mapData.roomsDict)} />
+            <EdgeBuilder mapData={mapData} />
+            <NodeBuilder mapData={mapData} />
           </g>
           {/* <PlayerBuilder playerData={playerData} /> */}
         </SVG>

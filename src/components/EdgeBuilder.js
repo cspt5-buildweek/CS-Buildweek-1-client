@@ -1,19 +1,22 @@
 import React from 'react';
 
-const EdgeBuilder = ({ edges }) => {
+const EdgeBuilder = ({ mapData }) => {
   return (
     <g>
-      {edges.map(edge => (
-        <line
-          key={edge.id}
-          x1={edge.fromCoords[0]}
-          x2={edge.toCoords[0]}
-          y1={edge.fromCoords[1]}
-          y2={edge.toCoords[1]}
-          stroke="black"
-          strokeWidth="0.2"
-        />
-      ))}
+      {Object.values(mapData.linksDict).map(edge => {
+        const nodes = Object.values(edge.nodes);
+        return (
+          <line
+            key={edge.id}
+            x1={mapData.roomsDict[nodes[0].to].coords[0]}
+            x2={mapData.roomsDict[nodes[1].to].coords[0]}
+            y1={mapData.roomsDict[nodes[0].to].coords[1]}
+            y2={mapData.roomsDict[nodes[1].to].coords[1]}
+            stroke="black"
+            strokeWidth="0.2"
+          />
+        );
+      })}
     </g>
   );
 };

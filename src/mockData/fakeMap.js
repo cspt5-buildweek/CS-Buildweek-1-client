@@ -50,31 +50,31 @@ const rooms_1 = [
 const halls_1 = [
   {
     id: 1,
-    from: 1,
-    to: 2,
-    fromDir: 's',
-    toDir: 'n'
+    nodes: {
+      1: { to: 2, dir: 's' },
+      2: { to: 1, dir: 'n' }
+    }
   },
   {
     id: 2,
-    from: 2,
-    to: 3,
-    fromDir: 'e',
-    toDir: 'w'
+    nodes: {
+      2: { to: 3, dir: 'e' },
+      3: { to: 2, dir: 'w' }
+    }
   },
   {
     id: 3,
-    from: 2,
-    to: 4,
-    fromDir: 's',
-    toDir: 'n'
+    nodes: {
+      2: { to: 4, dir: 's' },
+      4: { to: 2, dir: 'n' }
+    }
   },
   {
     id: 4,
-    from: 4,
-    to: 5,
-    fromDir: 'w',
-    toDir: 'e'
+    nodes: {
+      4: { to: 5, dir: 'w' },
+      5: { to: 4, dir: 'e' }
+    }
   }
 ];
 

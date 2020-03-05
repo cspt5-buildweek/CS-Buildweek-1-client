@@ -1,9 +1,9 @@
 import React from 'react';
 
-const NodeBuilder = ({ nodes }) => {
+const NodeBuilder = ({ mapData }) => {
   return (
     <g>
-      {nodes.map(node => (
+      {Object.values(mapData.roomsDict).map(node => (
         <g key={node.id}>
           <circle
             cx={node.coords[0]}
