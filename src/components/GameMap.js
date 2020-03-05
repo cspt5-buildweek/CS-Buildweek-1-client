@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import * as d3 from 'd3';
+import React, { useEffect, useState, useRef } from 'react';
+// import * as d3 from 'd3';
 
 import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { useLogOnChange } from '../hooks/misc';
 import NodeBuilder from './NodeBuilder';
 import EdgeBuilder from './EdgeBuilder';
-import PlayerBuilder from './PlayerBuilder';
+// import PlayerBuilder from './PlayerBuilder';
 
 const MapContainer = styled(Paper)`
   padding: 2rem;
@@ -35,21 +35,18 @@ const SVG = styled.svg`
 `;
 
 const GameMap = ({ mapData, playerData }) => {
-  const [viewBox, setViewBox] = useState('0 0 0 0');
-  useLogOnChange('viewBox', viewBox);
+  const [heightOffset, setHeightOffset] = useState(0);
+  useLogOnChange('heightOffset', heightOffset);
 
   const [edges, setEdges] = useState([]);
   // useLogOnChange('edges', edges);
+
+  const svgRef = useRef();
   
   useEffect(() => {
-    // size viewbox to data
-    const xOffset = d3.min(Object.values(mapData.roomsDict), room => room.coords[0]) - 2;
-    const yOffset = d3.min(Object.values(mapData.roomsDict), room => room.coords[1]) - 2;
-    const xRange = d3.extent(Object.values(mapData.roomsDict), room => room.coords[0]);
-    const yRange = d3.extent(Object.values(mapData.roomsDict), room => room.coords[1]);
-    const xSize = xRange[1] - xRange[0] + 4;
-    const ySize = yRange[1] - yRange[0] + 4;
-    setViewBox(`${xOffset} ${yOffset} ${xSize} ${ySize}`);
+    const { width, height } = svgRef.current.getBoundingClientRect();
+    const pixelsPerUnit = width / 10; // 10, because I chose to define the svg viewbox as 10 units wide.
+    setHeightOffset(height / (2 * pixelsPerUnit)); // the number of svg units needed to vertically center the origin, for a specific element size
 
     // create an edges array with start and end coordinates
     const edgeList = Object.values(mapData.linksDict).map(edge => ({
@@ -64,19 +61,21 @@ const GameMap = ({ mapData, playerData }) => {
     <MapContainer>
       <h4>GameMap</h4>
       <SVGWrapper>
-        <SVG viewBox={viewBox} preserveAspectRatio="xMinYMin slice">
+        <SVG ref={svgRef} viewBox={`-5 ${-heightOffset} 10 10`} preserveAspectRatio="xMinYMin slice">
           <circle r="0.12" cx="0" cy="0" fill="#1000b4" />
           <circle r="0.04" cx="0" cy="0" fill="black" />
-          <text
+          {/* <text
             x="0"
             y="0"
             fontSize="0.3"
           >
             (0,0)
-          </text>
-          <EdgeBuilder edges={edges} />
-          <NodeBuilder nodes={Object.values(mapData.roomsDict)} />
-          <PlayerBuilder playerData={playerData} />
+          </text> */}
+          <g>
+            <EdgeBuilder edges={edges} />
+            <NodeBuilder nodes={Object.values(mapData.roomsDict)} />
+          </g>
+          {/* <PlayerBuilder playerData={playerData} /> */}
         </SVG>
       </SVGWrapper>
     </MapContainer>

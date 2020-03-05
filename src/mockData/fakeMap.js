@@ -29,6 +29,21 @@ const rooms_1 = [
     name: 'treasure vault',
     desc: 'all the loot',
     coords: [0, 3]
+  },
+  {
+    id: 6,
+    name: '6',
+    coords: [3, 0]
+  },
+  {
+    id: 7,
+    name: '7',
+    coords: [4, 0]
+  },
+  {
+    id: 8,
+    name: '8',
+    coords: [5, 0]
   }
 ];
 
@@ -88,6 +103,8 @@ export const buildMap_1 = () => {
     dict[hall.id] = hall;
     return dict;
   }, {});
+
+  map.startRoom = 1;
 
   return map;
 };
