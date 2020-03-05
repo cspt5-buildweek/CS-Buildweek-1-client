@@ -48,7 +48,7 @@ const GameMap = ({ mapData, currentRoom }) => {
   }, []);
 
   useEffect(() => {
-    const [x, y] = mapData.roomsDict[mapData.startRoom].coords;
+    const [x, y] = mapData.roomsDict[currentRoom].coords;
     setTranslate([-x, -y]);
   }, [mapData, currentRoom]);
 
