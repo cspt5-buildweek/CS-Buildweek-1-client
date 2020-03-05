@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
@@ -85,20 +85,26 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const modalBinds = {
+  s: 'shop',
+  p: 'pick',
+  d: 'drop'
+};
+
 export default function InfoBar({ movePlayer }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [modal, setModal] = useState("shop");
 
-  let modalState;
-
-  if (modal === "shop") {
-    modalState = <ShopModal />;
-  } else if (modal === "pick") {
-    modalState = <PickUpModal />;
-  } else if (modal === "drop") {
-    modalState = <DropModal />;
-  }
+  const ModalState = useCallback(() => {
+    if (modal === "shop") {
+      return <ShopModal />;
+    } else if (modal === "pick") {
+      return <PickUpModal />;
+    } else if (modal === "drop") {
+      return <DropModal />;
+    }
+  }, [modal]);
 
   const handleOpen = name => {
     setModal(name);
@@ -110,6 +116,24 @@ export default function InfoBar({ movePlayer }) {
     setOpen(false);
   };
 
+  const handleModalKeys = ({ key }) => {
+    if (!modalBinds[key]) return; // not a modal-related key, ignore
+
+    if (modalBinds[key] === modal && open) { // key for currently open modal, close it
+      handleClose();
+    } else {
+      handleOpen(modalBinds[key]);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleModalKeys);
+
+    return () => {
+      window.removeEventListener('keydown', handleModalKeys);
+    };
+  });
+
   // Movement
   // const move = (e, direction) => {
   //   // Must be filled in
@@ -119,6 +143,8 @@ export default function InfoBar({ movePlayer }) {
   // const dropItem = () => {};
   // const pickUpItem = () => {};
   // const sellItem = () => {};
+
+  
 
   return (
     <BottomNavigation className={classes.root}>
@@ -152,21 +178,21 @@ export default function InfoBar({ movePlayer }) {
                 onClick={() => handleOpen("shop")}
                 className={classes.infoButtons}
               >
-                Shop
+                (<b>S</b>)hop
               </Button>
               <Button
                 variant="contained"
                 onClick={() => handleOpen("pick")}
                 className={classes.infoButtons}
               >
-                Pick up Item
+                (<b>P</b>)ick up Item
               </Button>
               <Button
                 variant="contained"
                 onClick={() => handleOpen("drop")}
                 className={classes.infoButtons}
               >
-                Drop Item
+                (<b>D</b>)rop Item
               </Button>
             </div>
             <div className={classes.directions}>
@@ -211,7 +237,9 @@ export default function InfoBar({ movePlayer }) {
             }}
           >
             <Fade in={open}>
-              <div className={classes.paper}>{modalState}</div>
+              <div className={classes.paper}>
+                <ModalState />
+              </div>
             </Fade>
           </Modal>
         </Grid>

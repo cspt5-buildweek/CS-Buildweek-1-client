@@ -13,6 +13,13 @@ const PageWrapper = styled.div`
   height: 100%;
 `;
 
+const arrowBinds = {
+  ArrowUp: 'n',
+  ArrowDown: 's',
+  ArrowLeft: 'w',
+  ArrowRight: 'e'
+};
+
 const GamePage = () => {
   // const userData = useContext(UserContext);
 
@@ -34,20 +41,19 @@ const GamePage = () => {
     });
   };
 
+  const arrowHandler = ({ key }) => {
+    if (!arrowBinds[key]) return; // not an arrow key, ignore
+
+    handleMovePlayer(arrowBinds[key])();
+  };
+
   useEffect(() => {
-    const keysToDir = {
-      ArrowUp: 'n',
-      ArrowDown: 's',
-      ArrowLeft: 'w',
-      ArrowRight: 'e'
-    };
-    window.addEventListener('keydown', ({ key }) => {
-      handleMovePlayer(keysToDir[key])();
-    });
+
+    window.addEventListener('keydown', arrowHandler);
 
     return () => {
-      window.removeEventListener('keydown');
-    }
+      window.removeEventListener('keydown', arrowHandler);
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   
   return (
