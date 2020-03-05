@@ -9,7 +9,7 @@ import GamePage from './pages/GamePage';
 import LoginPage from './pages/LoginPage';
 
 function App() {
-  const { UserProvider, setValue } = useUserContext();
+  const { UserProvider } = useUserContext();
 
   return (
     <UserProvider>
@@ -28,9 +28,6 @@ function App() {
           </Route>
           
         </Switch>
-        <button onClick={() => setValue({ name: 'test_2' })}>
-          change
-        </button>
       </BrowserRouter>
     </UserProvider>
   );

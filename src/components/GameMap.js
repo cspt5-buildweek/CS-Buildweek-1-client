@@ -9,15 +9,29 @@ import NodeBuilder from './NodeBuilder';
 import EdgeBuilder from './EdgeBuilder';
 import PlayerBuilder from './PlayerBuilder';
 
-const SVGWrapper = styled(Paper)`
+const MapContainer = styled(Paper)`
   padding: 2rem;
-  margin: 2rem auto;
-  width: 70%;
+  /* margin: 2rem auto; */
+  height: calc(100% - 300px);
+  display: flex;
+  flex-direction: column;
+  /* width: 70%; */
+`;
+
+const SVGWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  flex: 1;
 `;
 
 const SVG = styled.svg`
   width: 100%;
+  height: 100%;
+  overflow: hidden;
   background-color: lightGrey;
+  position: absolute;
+  left: 0;
+  top: 0;
 `;
 
 const GameMap = ({ mapData, playerData }) => {
@@ -25,7 +39,7 @@ const GameMap = ({ mapData, playerData }) => {
   useLogOnChange('viewBox', viewBox);
 
   const [edges, setEdges] = useState([]);
-  useLogOnChange('edges', edges);
+  // useLogOnChange('edges', edges);
   
   useEffect(() => {
     // size viewbox to data
@@ -47,10 +61,10 @@ const GameMap = ({ mapData, playerData }) => {
   }, [mapData]);
 
   return (
-    <div>
+    <MapContainer>
       <h4>GameMap</h4>
       <SVGWrapper>
-        <SVG viewBox={viewBox}>
+        <SVG viewBox={viewBox} preserveAspectRatio="xMinYMin slice">
           <circle r="0.12" cx="0" cy="0" fill="#1000b4" />
           <circle r="0.04" cx="0" cy="0" fill="black" />
           <text
@@ -65,7 +79,7 @@ const GameMap = ({ mapData, playerData }) => {
           <PlayerBuilder playerData={playerData} />
         </SVG>
       </SVGWrapper>
-    </div>
+    </MapContainer>
   ); 
 };
 

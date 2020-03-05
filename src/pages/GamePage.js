@@ -1,11 +1,17 @@
 import React, { /*useContext,*/ useState } from 'react';
 // import { UserContext } from '../hooks/useUserContext';
 
+import styled from 'styled-components';
+
 import { buildMap_1 } from '../mockData/fakeMap';
 import { useLogOnChange } from '../hooks/misc';
 import GameMap from '../components/GameMap';
 import InfoBar from "../components/BottomNav/InfoBar";
 
+const PageWrapper = styled.div`
+  flex: 1;
+  height: 100%;
+`;
 
 const GamePage = () => {
   // const userData = useContext(UserContext);
@@ -36,10 +42,10 @@ const GamePage = () => {
   };
   
   return (
-    <div>
+    <PageWrapper>
       <GameMap mapData={map} playerData={player} />
       <InfoBar movePlayer={handleMovePlayer} />
-    </div>
+    </PageWrapper>
   );
 };
 
