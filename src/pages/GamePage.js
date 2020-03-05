@@ -1,4 +1,4 @@
-import React, { /*useContext,*/ useState } from 'react';
+import React, { /*useContext,*/ useState, useEffect } from 'react';
 // import { UserContext } from '../hooks/useUserContext';
 
 import styled from 'styled-components';
@@ -23,13 +23,32 @@ const GamePage = () => {
   useLogOnChange('currentRoom', currentRoom);
 
   const handleMovePlayer = (dir) => () => {
-    const linkInDir = mapData.roomsDict[currentRoom].links[dir];
-    if (linkInDir) { // check if current room has an exit in that direction
-      setCurrentRoom(mapData.roomsDict[linkInDir.next_room].id); // get the id of next room in that direction
-    } else {
-      console.error('no path in that direction');
-    }
+    setCurrentRoom(prev => {
+      const linkInDir = mapData.roomsDict[prev].links[dir]; // look for a link in the given direction
+      if (linkInDir) {
+        return mapData.roomsDict[linkInDir.next_room].id; // get the id of the room in that direction if it exists
+      } else {
+        console.error('no path in that direction');
+        return prev;
+      }
+    });
   };
+
+  useEffect(() => {
+    const keysToDir = {
+      ArrowUp: 'n',
+      ArrowDown: 's',
+      ArrowLeft: 'w',
+      ArrowRight: 'e'
+    };
+    window.addEventListener('keydown', ({ key }) => {
+      handleMovePlayer(keysToDir[key])();
+    });
+
+    return () => {
+      window.removeEventListener('keydown');
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   
   return (
     <PageWrapper>
