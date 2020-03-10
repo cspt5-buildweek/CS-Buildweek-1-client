@@ -1,3 +1,4 @@
+import axios from 'axios';
 
 const rooms_1 = [
   {
@@ -104,4 +105,12 @@ export const buildMap_1 = () => {
   map.startRoom = 1;
 
   return map;
+};
+
+export const get_map = () => {
+  return axios.get('http://localhost:5000/api/map')
+    .then(res => {
+      console.log('MAP', res);
+      return res.data[0];
+    });
 };

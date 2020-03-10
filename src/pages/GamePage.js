@@ -3,7 +3,7 @@ import React, { /*useContext,*/ useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 
-import { buildMap_1 } from '../mockData/fakeMap';
+import { get_map } from '../mockData/fakeMap';
 import { useLogOnChange } from '../hooks/misc';
 import GameMap from '../components/GameMap';
 import InfoBar from "../components/BottomNav/InfoBar";
@@ -23,17 +23,25 @@ const arrowBinds = {
 const GamePage = () => {
   // const userData = useContext(UserContext);
 
-  const [mapData] = useState(buildMap_1());
+  const [mapData, setMapData] = useState(null);
   useLogOnChange('Map', mapData);
 
-  const [currentRoom, setCurrentRoom] = useState(mapData.startRoom);
+  const [currentRoom, setCurrentRoom] = useState(null);
   useLogOnChange('currentRoom', currentRoom);
 
-  const handleMovePlayer = (dir) => () => {
+  useEffect(() => {
+    get_map()
+    .then(map => {
+      setMapData(map);
+      setCurrentRoom(map.start);
+    });
+  }, []);
+
+  const handleMovePlayer = (dir) => {
     setCurrentRoom(prev => {
-      const linkInDir = mapData.roomsDict[prev].links[dir]; // look for a link in the given direction
+      const linkInDir = mapData.rooms[prev.id].halls[dir]; // look for a link in the given direction
       if (linkInDir) {
-        return mapData.roomsDict[linkInDir.next_room].id; // get the id of the room in that direction if it exists
+        return mapData.rooms[linkInDir]; // get the id of the room in that direction if it exists
       } else {
         console.error('no path in that direction');
         return prev;
@@ -44,7 +52,7 @@ const GamePage = () => {
   const arrowHandler = ({ key }) => {
     if (!arrowBinds[key]) return; // not an arrow key, ignore
 
-    handleMovePlayer(arrowBinds[key])();
+    handleMovePlayer(arrowBinds[key]);
   };
 
   useEffect(() => {
@@ -54,10 +62,16 @@ const GamePage = () => {
     return () => {
       window.removeEventListener('keydown', arrowHandler);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [mapData]); // eslint-disable-line react-hooks/exhaustive-deps
   
+  if (!mapData || !currentRoom) {
+    console.log('LOADING MAP');
+    return <h2>Loading!</h2>
+  }
+
   return (
     <PageWrapper>
+      <button onClick={get_map}>GET MAP</button>
       <GameMap mapData={mapData} currentRoom={currentRoom} />
       <InfoBar movePlayer={handleMovePlayer} />
     </PageWrapper>

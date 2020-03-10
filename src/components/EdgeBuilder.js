@@ -3,15 +3,15 @@ import React from 'react';
 const EdgeBuilder = ({ mapData }) => {
   return (
     <g>
-      {Object.values(mapData.linksDict).map(edge => {
+      {mapData.halls_list.map(edge => {
         const nodes = Object.values(edge.nodes);
         return (
           <line
             key={edge.id}
-            x1={mapData.roomsDict[nodes[0].to].coords[0]}
-            x2={mapData.roomsDict[nodes[1].to].coords[0]}
-            y1={mapData.roomsDict[nodes[0].to].coords[1]}
-            y2={mapData.roomsDict[nodes[1].to].coords[1]}
+            x1={mapData.rooms[nodes[0].to].location[0]}
+            x2={mapData.rooms[nodes[1].to].location[0]}
+            y1={mapData.rooms[nodes[0].to].location[1]}
+            y2={mapData.rooms[nodes[1].to].location[1]}
             stroke="black"
             strokeWidth="0.2"
           />

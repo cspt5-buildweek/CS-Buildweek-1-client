@@ -200,27 +200,27 @@ export default function InfoBar({ movePlayer }) {
                 fontSize="large"
                 className={classes.icons}
                 style={iconStyle}
-                onClick={movePlayer('n')}
+                onClick={() => movePlayer('n')}
               />
               <div>
                 <ArrowBackIcon
                   fontSize="large"
                   className={`${classes.middleIcons} ${classes.icons}`}
                   style={iconStyle}
-                  onClick={movePlayer('w')}
+                  onClick={() => movePlayer('w')}
                 />
                 <ArrowForwardIcon
                   fontSize="large"
                   className={`${classes.middleIcons} ${classes.icons}`}
                   style={iconStyle}
-                  onClick={movePlayer('e')}
+                  onClick={() => movePlayer('e')}
                 />
               </div>
               <ArrowDownwardIcon
                 fontSize="large"
                 className={classes.icons}
                 style={iconStyle}
-                onClick={movePlayer('s')}
+                onClick={() => movePlayer('s')}
               />
             </div>
           </div>
